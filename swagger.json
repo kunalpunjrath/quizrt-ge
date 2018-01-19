@@ -1,0 +1,76 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Swagger API",
+        "license": {
+            "name": "MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/games": {
+            "post": {
+                "tags": [
+                    "Games"
+                ],
+                "description": "Creates a new game",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "topicId",
+                        "description": "Topic ID to be passed in the request",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "$ref": "#/definitions/Game"
+                        }
+                    },
+                    {
+                        "name": "playerId",
+                        "description": "Player ID to be passed in the request",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "$ref": "#/definitions/Game"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Game": {
+            "required": [
+                "topicId",
+                "playerId"
+            ],
+            "properties": {
+                "topicId": {
+                    "type": "string"
+                },
+                "playerId": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "responses": {},
+    "parameters": {},
+    "securityDefinitions": {},
+    "tags": []
+}
