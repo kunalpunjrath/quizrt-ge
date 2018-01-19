@@ -1,25 +1,24 @@
 {
   "name": "quizrt-ge",
   "version": "1.0.0",
-  "description": "Game Engine for QuizRT",
-  "main": "index.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "start": "node bin/www",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "morgan": "^1.9.0",
     "uniqid": "^4.1.1"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "swagger-ui-express": "^2.0.14"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kunalpunjrath/quizrt-ge.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kunalpunjrath/quizrt-ge/issues"
-  },
-  "homepage": "https://github.com/kunalpunjrath/quizrt-ge#readme"
+  "repository": {},
+  "description": "quizrt-ge"
 }
