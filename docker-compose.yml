@@ -1,0 +1,17 @@
+version: '2.1'
+
+services:
+  web:
+    build: .
+    ports: 
+     - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    environment:
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1
+    volumes:
+      - /data/mongodb/db:/data/db
+    ports:
+      - "27017:27017"
