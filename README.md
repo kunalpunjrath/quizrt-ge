@@ -22,5 +22,4 @@ ___npm start___ from inside both packages to start local servers from 3000 & 300
 * "ENDGAME": "Client Event trigger to abruptly end game" 
  
 ### Design Doc 
-GameEngine (draw.io file) 
-Detailed design is present in [https://www.draw.io/#Hkunalpunjrath%2Fquizrt-ge%2Fmaster%2FGameEngine] 
+Detailed design is present in [Design](https://www.draw.io/#Hkunalpunjrath%2Fquizrt-ge%2Fmaster%2FGameEngine) 
