@@ -29,7 +29,7 @@ const getQuestionsFromDB = function(topicId) {
     ];
     setTimeout(function() {
       resolve(body);
-    }, 5000);
+    }, 1000);
   });
 };
 

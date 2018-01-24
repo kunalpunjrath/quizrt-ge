@@ -7,19 +7,26 @@ const swaggerDocument = require('./swagger.json');
 const _port = process.env.PORT || 3000;
 
 function Config(app) {
-    morgan.token('time', (req, res) => new Date().toISOString());
-    app.use(morgan('[:time] :remote-addr :method :url :status :res[content-length] :response-time ms'));
-    
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    
-    app.use(require('./api/v1'));
-    
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    
-    app.listen(_port, () => {
-        console.log('App is listening to request on port:', _port);
-    });
+  morgan.token('time', (req, res) => new Date().toISOString());
+  app.use(morgan('[:time] :remote-addr :method :url :status :res[content-length] :response-time ms'));
+
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(bodyParser.json());
+
+  app.use(require('./api/v1'));
+//   app.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   }); 
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  app.listen(_port, () => {
+    console.log('App is listening to request on port:', _port);
+  });
 }
 
 module.exports = Config;
