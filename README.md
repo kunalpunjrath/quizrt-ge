@@ -6,7 +6,7 @@ Contains both packages:
 ## Package details
 __gE__ contains _Game Engine_ code pointing to PORT: 3000  
 __mE__ contains _Matching Engine_ code pointing to PORT: 3001  
-__gE__ swagger end points [http://localhost:3000/api-docs] 
+__gE__ [swagger endpoints](http://localhost:3000/api-docs) 
  
 ## How to install 
 ___npm i___ from inside both packages to install dependencies 
