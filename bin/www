@@ -1,7 +1,6 @@
-const app = require('../app');
+const app = require('express')();
+const server = require('http').Server(app);
 
-const _port = (process.env.PORT || 3000);
+require('../config')(app);
 
-app.listen(_port, () => {
-  console.log('App is listening to request on port:', _port);
-});
+require('../server/sockets')(app, server);

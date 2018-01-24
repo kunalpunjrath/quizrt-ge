@@ -39,7 +39,7 @@
                         "description": "Player ID to be passed in the request",
                         "in": "formData",
                         "required": true,
-                        "type": "string",
+                        "type": "array",
                         "schema": {
                             "$ref": "#/definitions/Game"
                         }
@@ -64,7 +64,7 @@
                     "type": "string"
                 },
                 "playerId": {
-                    "type": "string"
+                    "type": "array"
                 }
             }
         }
