@@ -35,8 +35,8 @@
                         }
                     },
                     {
-                        "name": "playerId",
-                        "description": "Player ID to be passed in the request",
+                        "name": "playerIds",
+                        "description": "Player IDs to be passed in the request",
                         "in": "formData",
                         "required": true,
                         "type": "array",
@@ -55,16 +55,21 @@
     },
     "definitions": {
         "Game": {
+            "type": "object",
             "required": [
                 "topicId",
-                "playerId"
+                "playerIds"
             ],
             "properties": {
                 "topicId": {
                     "type": "string"
                 },
-                "playerId": {
-                    "type": "array"
+                "playerIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "$ref": "#/definitions/Game"
+                    }
                 }
             }
         }

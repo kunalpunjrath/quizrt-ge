@@ -1,0 +1,26 @@
+{
+  "name": "quizrt-mme",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "promise": "^8.0.1",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "socket.io": "^2.0.4",
+    "uniqid": "^4.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-airbnb": "^16.1.0"
+  },
+  "repository": {},
+  "description": "quizrt-mme"
+}
