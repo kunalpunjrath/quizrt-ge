@@ -188,7 +188,8 @@
         });
       });
       $('#end').click(function () {
-        start.emit(events.ENDGAME, 'Client abruptly ended game');
+        //start.emit(events.ENDGAME, 'Client abruptly ended game');
+        //emit to GE if game ends
       });
     });
 
