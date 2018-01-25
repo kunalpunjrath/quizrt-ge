@@ -96,6 +96,7 @@
         "topicid": "T1",
         "playerid":  playerIds[Math.floor(Math.random() *  Math.floor(4))]
       };
+      var globalScore = 0;
       var events = {
         INITIATEGAME: 'Client Event trigger to start game',
         GAMEID: 'Server Event trigger on generating game ID',
@@ -104,7 +105,7 @@
         ANSWER: 'Answer event to the selected answer',
         ENDGAME: 'Client Event trigger to abruptly end game'
       };
-      var globalScore = 0;
+      
       $('#start').click(function () {
         start.emit(events.INITIATEGAME, gamestart);
       });
@@ -116,77 +117,70 @@
         gameison = io.connect('http://127.0.0.1:3000/' + gameId);
         gameison.emit(events.STARTQUIZ, 'Client request for Quiz questions');
         gameison.on(events.QUESTION, function (data) {
-          //var data = data[0];
-        var  data = {
+        var data = data[0];
+        /*var  data = {
               answers:[
                 {
-                  isCorrect: true,
                   value: 'Answer 1'
                 },
                 {
-                  isCorrect: false,
                   value: 'Answer 2'
                 },
                 {
-                  isCorrect: false,
                   value: 'Answer 3'
                 },                
                 {
-                  isCorrect: false,
                   value: 'Answer 4'
                 }
               ],
               question: 'Question 1',
               topic: 'topic 1',
-              player: 'p1'
-          };          
+              player: 'player 1',
+              score: 0
+          };   */
+          //In the above format the GE have to send data       
 
           var currentQuestion = data.question,
           currentAnswers = data.answers,
-          currentTopic = data.topic; 
+          currentTopic = data.topic;
+          globalScore = data.score;
 
-          $('#topic').append($('<h2>').text('The topic selected is " '+currentTopic+' "'));
-          $('#question').append($('<li>').text('The Question is " '+currentQuestion+' ? " '));
+          $('#topic').empty().append($('<h2>').text('The topic selected is " '+currentTopic+' "'));
+
+          if(globalScore && globalScore!=0){ //if data is comming not the first time
+              $('#score').html('<h2>Score is '+globalScore+'</h2>');
+          } 
+
+          $('#question').empty().append($('<li>').text('The Question is " '+currentQuestion+' ? " '));
           $('#question').append($('<li>').text('please select one answer!'));
-
+          $('#answers').empty();
           for(var i=0;i<currentAnswers.length;i++){
             var answer = currentAnswers[i].value;
             var radioBtn = $('<input type="radio" name="answer" value="' + answer + '" />');
             radioBtn.appendTo('#answers');
             $('#answers').append($('<li>').text(answer));
-          }          
+          }  
 
-
-
-          
+          //select the answer and emit to everyone
             $('#answers').on('click', 'input[name=answer]:radio', function() {
-                console.log($(this).val());
-
-                console.log(data);
-                var answerSeleced = $(this).val();
-                var answers = data.answers;
-                var player = data.player;
+                console.log($(this).val());                
+                var answerSeleced = $(this).val();                
                 var topic = data.topic;
                 var question = data.question;
-                var scorecard = 0;
-
-                for(var i=0;i<answers.length;i++){
-                  if(answers[i].value == answerSeleced){
-                    if(answers[i].isCorrect){
-                        scorecard = 10;
-                    }else{
-                        scorecard = 0;
-                    }
-                  }
-                }
-                console.log('scorecard '+scorecard);
-                globalScore = globalScore + scorecard;
+                var player = gamestart.playerid;
+                
+                
                 var answerObj = {
                   playerid :player,
                   question : question,
-                  score : scorecard
-                }                
-                $('#score').html('<h2>Score is '+globalScore+'</h2>');
+                  topic: topic,
+                  answer : answerSeleced
+                };
+
+                console.log('emitting to game engine the selected answer!!');
+                console.log(answerObj);
+
+                //emitting the answer object with all to Game Engine to evaluate
                 gameison.emit(events.ANSWER, answerObj);
                 
             });
