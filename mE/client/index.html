@@ -14,44 +14,60 @@
       font: 13px Helvetica, Arial;
     }
 
-    form {
-      background: #000;
-      padding: 3px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
+    h2 {
+      color:royalblue;
     }
 
-    form input {
+    input[type="radio"] {
       border: 0;
-      padding: 10px;
-      width: 90%;
-      margin-right: .5%;
+      float:left;
+      margin-left:20px;
     }
-
-    form button {
-      width: 9%;
-      background: rgb(130, 224, 255);
-      border: none;
-      padding: 10px;
+    #topic{
+      padding-top:50px;
     }
+    #score{
+      padding-top:20px;
+    }
+    button {
+      width: 200px;
+      background:blueviolet;
+      border: 1px solid #e5e5e5;
+      padding: 10px;
+      color:whitesmoke;
+      cursor: pointer;
+    }
+    button:hover{
+      color: turquoise;
+    }
+    
 
-    #messages {
+    #question, #answers {
       list-style-type: none;
       margin: 0;
       padding: 0;
     }
-
-    #messages li {
+    #question li {
       padding: 5px 10px;
     }
-
-    #messages li:nth-child(odd) {
+    #answers li{
+      padding: 0 50px 0 0;
+      float: left;
+    }
+    #question li:nth-child(odd) {
       background: #eee;
     }
-
-    #messages {
-      margin-bottom: 40px
+    #answers{
+      margin-bottom:20px;
+    }
+    #question {
+      margin-top:10px;   
+      margin-bottom: 20px;   
+    }
+    .button{
+      float:left;
+      width:100%;
+      padding-top:30px;
     }
 
   </style>
@@ -59,10 +75,14 @@
 
 <body>
   <h3>Game Console</h3>
-  <ul id="messages"></ul>
-
+  <div id="topic"></div>
+  <div id="score"></div>
+  <ul id="question"></ul>
+  <ul id="answers"></ul>
+  <div class="button">
   <button id="start">Start game</button>
   <button id="end">Quit game</button>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -70,18 +90,22 @@
   <script>
     $(function () {
       var start = io.connect('http://127.0.0.1:3001/start');
+      var gameison;
       var  playerIds  = ['p1',  'p2',  'p3',  'p4'];
       var  gamestart  = {
         "topicid": "T1",
         "playerid":  playerIds[Math.floor(Math.random() *  Math.floor(4))]
       };
+      var globalScore = 0;
       var events = {
         INITIATEGAME: 'Client Event trigger to start game',
         GAMEID: 'Server Event trigger on generating game ID',
         STARTQUIZ: 'Client Event trigger to fetch questions',
         QUESTION: 'Server Event trigger on sending across question',
+        ANSWER: 'Answer event to the selected answer',
         ENDGAME: 'Client Event trigger to abruptly end game'
       };
+      
       $('#start').click(function () {
         start.emit(events.INITIATEGAME, gamestart);
       });
@@ -90,13 +114,79 @@
         //on receive of data create a new io connection with name space 'game id' received
         var gameId = data.gameId;
         console.log('GameID generated :: ', gameId);
-        var gameison = io.connect('http://127.0.0.1:3000/' + gameId);
+        gameison = io.connect('http://127.0.0.1:3000/' + gameId);
         gameison.emit(events.STARTQUIZ, 'Client request for Quiz questions');
         gameison.on(events.QUESTION, function (data) {
-          console.log('Question :: ', data);
+        var data = data[0];
+        /*var  data = {
+              answers:[
+                {
+                  value: 'Answer 1'
+                },
+                {
+                  value: 'Answer 2'
+                },
+                {
+                  value: 'Answer 3'
+                },                
+                {
+                  value: 'Answer 4'
+                }
+              ],
+              question: 'Question 1',
+              topic: 'topic 1',
+              player: 'player 1',
+              score: 0
+          };   */
+          //In the above format the GE have to send data       
+
+          var currentQuestion = data.question,
+          currentAnswers = data.answers,
+          currentTopic = data.topic;
+          globalScore = data.score;
+
+          $('#topic').empty().append($('<h2>').text('The topic selected is " '+currentTopic+' "'));
+
+          if(globalScore && globalScore!=0){ //if data is comming not the first time
+              $('#score').html('<h2>Score is '+globalScore+'</h2>');
+          } 
+
+          $('#question').empty().append($('<li>').text('The Question is " '+currentQuestion+' ? " '));
+          $('#question').append($('<li>').text('please select one answer!'));
+          $('#answers').empty();
+          for(var i=0;i<currentAnswers.length;i++){
+            var answer = currentAnswers[i].value;
+            var radioBtn = $('<input type="radio" name="answer" value="' + answer + '" />');
+            radioBtn.appendTo('#answers');
+            $('#answers').append($('<li>').text(answer));
+          }  
+
+          //select the answer and emit to everyone
+            $('#answers').on('click', 'input[name=answer]:radio', function() {
+                console.log($(this).val());                
+                var answerSeleced = $(this).val();                
+                var topic = data.topic;
+                var question = data.question;
+                var player = gamestart.playerid;
+                
+                
+                var answerObj = {
+                  playerid :player,
+                  question : question,
+                  topic: topic,
+                  answer : answerSeleced
+                };
+
+                console.log('emitting to game engine the selected answer!!');
+                console.log(answerObj);
+
+                //emitting the answer object with all to Game Engine to evaluate
+                gameison.emit(events.ANSWER, answerObj);
+                
+            });
+                        
         });
       });
-
       $('#end').click(function () {
         start.emit(events.ENDGAME, 'Client abruptly ended game');
       });
