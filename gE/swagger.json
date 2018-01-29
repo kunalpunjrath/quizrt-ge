@@ -29,17 +29,15 @@
                         "description": "Topic ID to be passed in the request",
                         "in": "formData",
                         "required": true,
-                        "type": "string",
                         "schema": {
                             "$ref": "#/definitions/Game"
                         }
                     },
                     {
                         "name": "playerIds",
-                        "description": "Player IDs to be passed in the request",
+                        "description": "Player IDs to be passed in the request as an array",
                         "in": "formData",
                         "required": true,
-                        "type": "array",
                         "schema": {
                             "$ref": "#/definitions/Game"
                         }
@@ -67,8 +65,7 @@
                 "playerIds": {
                     "type": "array",
                     "items": {
-                        "type": "string",
-                        "$ref": "#/definitions/Game"
+                        "type": "string"
                     }
                 }
             }
