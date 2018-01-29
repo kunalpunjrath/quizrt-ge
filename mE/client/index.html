@@ -114,8 +114,8 @@
         //on receive of data create a new io connection with name space 'game id' received
         var gameId = data.gameId;
         console.log('GameID generated :: ', gameId);
-        gameison = io.connect('http://127.0.0.1:3000/' + gameId);
-        gameison.emit(events.STARTQUIZ, 'Client request for Quiz questions');
+        gameison = io.connect('http://127.0.0.1:3000/gameroom');
+        gameison.emit(events.STARTQUIZ, data);
         gameison.on(events.QUESTION, function (data) {
         var data = data[0];
         /*var  data = {
