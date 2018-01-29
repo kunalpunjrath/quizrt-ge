@@ -12,7 +12,10 @@ __gE__ [swagger endpoints](http://localhost:3000/api-docs)
 ___npm i___ from inside both packages to install dependencies 
  
 ## How to run 
-___npm start___ from inside both packages to start local servers from 3000 & 3001  
+* ___npm start___ from inside both packages to start local servers from 3000 & 3001  
+* open browser & launch __http://localhost:3001/startgame__   
+    -   Click 'Start Game' button as player atleat 2 times to begin game (post 20 secsonds of first player joining).
+    On 4 clicks a game will start instantly.
  
 ### Events 
 * "INITIATEGAME": "Client Event trigger to start game" 
