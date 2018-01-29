@@ -12,7 +12,7 @@ const getGameId = function(topicId, playerIds) {
     json: true
   };
 
-  return Request.post(object);
+  return Request(object);
 };
 
 module.exports = {

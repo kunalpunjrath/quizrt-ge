@@ -67,7 +67,8 @@ const joinGame = function(topicId, playerIds) {
   
   gameService.getGameId(topicId, playerIds)
     .then(function(data) {
-      socket.emit(MatchingEngineEvents.GAMEID, {gameId: /* data.gameId */ 'g1', topicId, playerIds});
+      console.log(data);
+      socket.emit(MatchingEngineEvents.GAMEID, {gameId: data.gameId, topicId, playerIds});
     }, function(err) {
       console.log(err);
     });
